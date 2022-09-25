@@ -11,7 +11,7 @@ Example:
 |        Raw Bytes                    | Label  | Value         |
 |-------------------------------------|--------|---------------|
 | 00000000 00000000 00000000 00000001 |   XID  | Transaction 1 |
-| 00000000                            |   PAD  |               |
+| 00000000                            | PADDING |               |
 | 00000001                            |  Opcode | CREATE_RECORD |
 | 00000000                            |  Access | DENY ALL      |
 | 00000001                            |  DatLen | 1 Packet Only |
