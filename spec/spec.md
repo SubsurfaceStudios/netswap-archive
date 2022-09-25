@@ -16,10 +16,7 @@ Example:
 | 00000001                            | DatLen | 1 Packet Only |
 | 00000000                            | NULL   |               |
 | 00000000                            | NULL   |               |
-
-
-
-
+| 01010100 01000101 01010011 01010100 | Data   | ASCII "TEST"  |
 
 
 Due to MTU restrictions, the max size of a TCP packet (going either way) is 1500 bytes.
