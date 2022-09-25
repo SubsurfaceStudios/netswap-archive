@@ -10,14 +10,14 @@ Example:
 
 |        Raw Bytes                    | Label   | Value         |
 |-------------------------------------|---------|---------------|
-| 00000000 00000000 00000000 00000001 |   XID   | Transaction 1 |
+| 00000000 00000000 00000000 00000001 | XID     | Transaction 1 |
 | 00000000                            | PADDING |               |
-| 00000001                            |  Opcode | CREATE_RECORD |
-| 00000000                            |  Access | DENY ALL      |
-| 00000001                            |  DatLen | 1 Packet Only |
-| 00000000                            |   NUL   |               |
-| 00000000                            |   NUL   |               |
-| 01010100 01000101 01010011 01010100 |  Data   | ASCII "TEST"  |
+| 00000001                            | Opcode  | CREATE_RECORD |
+| 00000000                            | Access  | DENY ALL      |
+| 00000001                            | DatLen  | 1 Packet Only |
+| 00000000                            | NULL    |               |
+| 00000000                            | NULL    |               |
+| 01010100 01000101 01010011 01010100 | Data    | ASCII "TEST"  |
 
 
 Due to MTU restrictions, the max size of a TCP packet (going either way) is 1500 bytes.
