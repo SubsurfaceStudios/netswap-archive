@@ -1,5 +1,5 @@
-# GENERIC_OP_SUCCESS_ACK
-# Opcode (SERVER): 0
+# FAILURE_ACCESS_VIOLATION_ACK
+# Opcode (SERVER): 1
 
 ### Header Allocation
 | Header | Byte | Name   |

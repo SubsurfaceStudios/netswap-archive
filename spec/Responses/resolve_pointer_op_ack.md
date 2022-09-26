@@ -1,5 +1,7 @@
-# GENERIC_OP_SUCCESS_ACK
-# Opcode (SERVER): 0
+# RESOLVE_POINTER_OP_ACK
+# Opcode (SERVER): 3
+
+Dereferences a pointer on the global buffer.
 
 ### Header Allocation
 | Header | Byte | Name   |
@@ -16,4 +18,4 @@ This ACK contains no data in headers.
 
 ### Data
 
-This ACK contains no data in the Data block.
+Data contained in this ACK is the raw data set in the global buffer by the owner of this address.

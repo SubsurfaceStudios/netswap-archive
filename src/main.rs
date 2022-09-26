@@ -5,9 +5,9 @@ use std::sync::Mutex;
 
 use lazy_static::lazy_static;
 
-mod buffer;
-
 use crate::buffer::{BufferEntry, Buffer, permissions};
+
+mod buffer;
 
 const CLIENT_RECV_BUF_SIZE_BYTES : usize = 50;
 const PORT : &'static str = "3333";
