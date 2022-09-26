@@ -18,3 +18,11 @@ Language wrappers are either planned or already in progress for the following la
 * C#
 * Node.js
 * Rust
+
+# Roadmap
+[ ] Basic implementation of CRUD operations
+[ ] Ownership takeover / transfer
+[ ] Persistence to disk
+[ ] C# Client Wrapper
+[ ] Node.js Client Wrapper
+[ ] Rust Client Wrapper
