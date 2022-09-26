@@ -34,8 +34,8 @@ impl BufferEntry {
 
 
 pub struct Buffer {
-    pub entry_count : u128,
-    entries : HashMap<u128, BufferEntry>
+    pub entry_count : u64,
+    entries : HashMap<u64, BufferEntry>
 }
 
 impl Buffer {
@@ -52,11 +52,11 @@ impl Buffer {
         self.entry_count += 1;
     }
 
-    pub fn get_addr(&self, addr : u128) -> Option<&BufferEntry> {
+    pub fn get_addr(&self, addr : u64) -> Option<&BufferEntry> {
         self.entries.get(&addr)
     }
 
-    pub fn set_addr_data(&mut self, addr : u128, data : Box<[u8]>) -> Result<(), ()> {
+    pub fn set_addr_data(&mut self, addr : u64, data : Box<[u8]>) -> Result<(), ()> {
         let mut entry = match self.entries.get(&addr) {
             Some(x) => x,
             None => return Result::Err(())

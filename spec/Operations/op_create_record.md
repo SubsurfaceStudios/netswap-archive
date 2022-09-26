@@ -1,10 +1,14 @@
 ## OP_CREATE_RECORD
+## Opcode: 0
 Creates a record in the memswap_rs global buffer.
 ### Header Allocation
-Header 2 : byte 7 : ACCESS  
-Header 3 : byte 8 : NULL  
-Header 4 : byte 9 : NULL  
-Header 5 : byte 10 : NULL  
+| Header | Byte | Name   |
+|--------|------|--------|
+| 1      | 6    | OPCODE | 
+| 2      | 7    | ACCESS | 
+| 3      | 8    | NULL   |
+| 4      | 9    | NULL   |
+| 5      | 10   | NULL   |
 
 ### Header Values
 
