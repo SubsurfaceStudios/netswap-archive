@@ -1,3 +1,5 @@
+#![allow(dead_code)]
+
 use std::collections::HashMap;
 use std::collections::hash_map::DefaultHasher;
 use std::hash::{Hash, Hasher};
@@ -34,22 +36,48 @@ impl BufferEntry {
 
 
 pub struct Buffer {
-    pub entry_count : u64,
-    entries : HashMap<u64, BufferEntry>
+    entry_allocation_expansion_index : u64,
+    entry_allocation_table : HashMap<u64, bool>,
+    entries : HashMap<u64, BufferEntry>,
+}
+
+struct Allocation {
+    index : u64,
+    is_new_alloc : bool
 }
 
 impl Buffer {
     pub fn new() -> Self {
         Self {
-            entry_count : 0,
+            entry_allocation_expansion_index : 0,
+            entry_allocation_table : HashMap::new(),
             entries : HashMap::new()
         }
     }
 
     pub fn push(&mut self, data : BufferEntry) {
-        self.entries.insert(self.entry_count, data);
+        let alloc : Allocation = self.allocate_entry();
 
-        self.entry_count += 1;
+        if alloc.is_new_alloc {
+            self.entry_allocation_expansion_index += 1;
+        }
+
+        self.entry_allocation_table.insert(alloc.index, true);
+
+        self.entries.insert(alloc.index, data);
+    }
+
+    fn allocate_entry(&self) -> Allocation {
+        for (index, in_use) in &self.entry_allocation_table {
+            if !in_use {
+                return Allocation {
+                    index : *index,
+                    is_new_alloc : false
+                };
+            }
+        }
+
+        Allocation { index: self.entry_allocation_expansion_index + 1, is_new_alloc: true }
     }
 
     pub fn get_addr(&self, addr : u64) -> Option<&BufferEntry> {
