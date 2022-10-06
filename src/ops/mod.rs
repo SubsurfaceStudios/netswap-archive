@@ -1,0 +1,2 @@
+pub const OP_CREATE_RECORD : u64 = 0;
+pub const OP_UPDATE_RECORD_PERMISSIONS : u64 = 1;

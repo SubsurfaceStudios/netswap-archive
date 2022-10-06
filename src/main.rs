@@ -8,8 +8,11 @@ use lazy_static::lazy_static;
 use crate::buffer::{BufferEntry, Buffer, permissions};
 
 mod buffer;
+mod ops;
+mod ack;
 
-const CLIENT_RECV_BUF_SIZE_BYTES : usize = 50;
+const CLIENT_RECV_BUF_SIZE_BYTES : usize = 1500;
+const MINIMUM_POSSIBLE_PACKET_SIZE_BYTES : usize = 10;
 const PORT : &'static str = "3333";
 
 lazy_static! {
@@ -32,7 +35,7 @@ fn main() {
     drop(listener);
 }
 
-#[test]
+// #[test]
 fn echo_connection_test() {
     match TcpStream::connect(format!("localhost:{PORT}")) {
         Ok(mut stream) => {
@@ -61,12 +64,22 @@ fn echo_connection_test() {
 }
 
 fn connection(mut stream : TcpStream) {
-    let mut recv_buffer = [0 as u8; CLIENT_RECV_BUF_SIZE_BYTES];
+    let mut recv_buffer = [0 as u8; 1500];
 
-    while match stream.read(&mut recv_buffer) {
+    'read_loop: while match stream.read(&mut recv_buffer) {
         Ok(size) => {
-            // ECHO
-            stream.write(&recv_buffer[0..size]).unwrap();
+            if size < MINIMUM_POSSIBLE_PACKET_SIZE_BYTES {
+                continue 'read_loop;
+            }
+
+            let xid = &recv_buffer[0..=3];
+            let pidx = recv_buffer[4];
+            let plen = recv_buffer[5];
+            let headers = &recv_buffer[6..=10];
+            let opcode = headers[0];
+
+            let data = &recv_buffer[11..size];
+
             true
         },
         Err(e) => {

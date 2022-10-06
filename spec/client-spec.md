@@ -21,6 +21,6 @@ Example:
 | 01010100 01000101 01010011 01010100 | Data     | ASCII "TEST"   |
 
 
-Due to MTU restrictions, the max size of a TCP packet (going either way) is 1500 bytes.  
+Due to MTU restrictions, the maximum size of a TCP packet (going either way) is 1500 bytes.  
 Accounting for TCP overhead, this makes the maximum size of a CTS packet 1400 bytes.  
 Accounting for the transaction ID and header information, the maximum size of the Operation Data field is 1390 bytes.
