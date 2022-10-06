@@ -8,7 +8,7 @@ The name `netswap` originates from the original concept of swap space. In most o
 The same concept applies to Netswap. The goal is to be able to send a pointer across any other band, and read or even write memory from any other location. This allows for sharing massive amounts of memory compared to sending it directly, similar to passing values by reference into a function instead of by value.  
 
 # Speed
-While working over the network does incur a relatively large overhead, the protocol is optimized as much as possible, by using only 10 bytes for internal headers, and up to 1.39 KB per packet of pure binary data for use by applications. The other ~100 bytes per packet are purely overhead from TCP, which cannot be reasonably avoided while maintaining a near-zero data corruption rate.  
+While working over the network does incur a relatively large overhead, the protocol is optimized as much as possible, by using only 10 bytes for internal headers, and up to 1.39 KB per packet of pure binary data for use by applications. The other ~100 bytes per packet are purely overhead from TCP, which cannot be reasonably avoided while maintaining a near-zero data loss rate.  
 Rather than HTTP, which incurs the cost of request headers, request processing, response headers, and more, `netswap` is built entirely on top of TCP/IP, again, to optimize bandwidth and speed as much as possible.
 
 # Authentication (or lack thereof)
