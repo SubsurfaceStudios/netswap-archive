@@ -6,7 +6,7 @@ use std::sync::Mutex;
 use lazy_static::lazy_static;
 
 use crate::server::buffer::{BufferEntry, Buffer, permissions};
-use crate::server::packet::{InboundPacket, OutboundPacket};
+use crate::server::packet::{InboundPacket, OutboundPacket, Recievable, Sendable};
 
 mod buffer;
 mod ack;
@@ -52,7 +52,27 @@ fn connection(mut stream : TcpStream) {
 
             let data = &recv_buffer[11..size];
 
-            compile_error!("Construct InboundPacket and call handle_packet");
+            let packet = InboundPacket::construct(recv_buffer[0..size].to_vec());
+            
+            match packet {
+                Some(p) => handle_packet(&stream, p),
+                None => {
+                    stream.write(
+                        OutboundPacket {
+                            xid : if let Ok(v) = bytemuck::try_from_bytes::<u64>(xid) {*v}
+                                  else {0},
+                            pid: 0,
+                            len: 0,
+                            headers : [0,0,0,0],
+                            opcode : ack::MALFORMED_PACKET_ERR_ACK,
+                            data : Vec::<u8>::new()
+                        }
+                        .send()
+                        .as_slice()
+                    );
+                }
+            };
+
 
             true
         },
@@ -64,6 +84,6 @@ fn connection(mut stream : TcpStream) {
     } {}
 }
 
-fn handle_packet(packet : InboundPacket) {
+fn handle_packet(stream : &TcpStream, packet : InboundPacket) {
     compile_error!("Implement handle_packet");
 }
