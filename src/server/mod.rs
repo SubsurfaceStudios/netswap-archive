@@ -41,6 +41,7 @@ fn connection(mut stream : TcpStream) {
     'read_loop: while match stream.read(&mut recv_buffer) {
         Ok(size) => {
             if size < MINIMUM_POSSIBLE_PACKET_SIZE_BYTES {
+                malformed_packet(&stream);
                 continue 'read_loop;
             }
 
@@ -56,21 +57,7 @@ fn connection(mut stream : TcpStream) {
             
             match packet {
                 Some(p) => handle_packet(&stream, p),
-                None => {
-                    stream.write(
-                        OutboundPacket {
-                            xid : if let Ok(v) = bytemuck::try_from_bytes::<u64>(xid) {*v}
-                                  else {0},
-                            pid: 0,
-                            len: 0,
-                            headers : [0,0,0,0],
-                            opcode : ack::MALFORMED_PACKET_ERR_ACK,
-                            data : Vec::<u8>::new()
-                        }
-                        .send()
-                        .as_slice()
-                    );
-                }
+                None => malformed_packet(&stream)
             };
 
 
@@ -82,6 +69,21 @@ fn connection(mut stream : TcpStream) {
             false
         }
     } {}
+}
+
+fn malformed_packet(stream : &TcpStream) {
+    stream.write(
+        OutboundPacket {
+            xid : 0,
+            pid: 0,
+            len: 0,
+            headers : [0,0,0,0],
+            opcode : ack::MALFORMED_PACKET_ERR_ACK,
+            data : Vec::<u8>::new()
+        }
+        .send()
+        .as_slice()
+    );
 }
 
 fn handle_packet(stream : &TcpStream, packet : InboundPacket) {
