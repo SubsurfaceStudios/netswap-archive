@@ -1,3 +1,4 @@
+use std::collections::HashMap;
 use std::thread;
 use std::net::{TcpListener, TcpStream, Shutdown};
 use std::io::{Read, Write};
@@ -17,7 +18,10 @@ const MINIMUM_POSSIBLE_PACKET_SIZE_BYTES : usize = 10;
 
 lazy_static! {
     static ref BUFFER : Mutex<Buffer> = Mutex::new(Buffer::new());
+    static ref PACKET_BUFFER : Mutex<PacketBuffer<InboundPacket>> = Mutex::new(HashMap::new());
 }
+
+type PacketBuffer<T> = HashMap<u64, Vec<T>>;
 
 fn init_server(port : &str) {
     let listener = TcpListener::bind(format!("0.0.0.0:{port}").as_str()).unwrap();
@@ -71,7 +75,7 @@ fn connection(mut stream : TcpStream) {
     } {}
 }
 
-fn malformed_packet(stream : &TcpStream) {
+fn malformed_packet(mut stream : &TcpStream) {
     stream.write(
         OutboundPacket {
             xid : 0,
@@ -87,5 +91,5 @@ fn malformed_packet(stream : &TcpStream) {
 }
 
 fn handle_packet(stream : &TcpStream, packet : InboundPacket) {
-    compile_error!("Implement handle_packet");
+    
 }

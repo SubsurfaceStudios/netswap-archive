@@ -36,7 +36,7 @@ impl Sendable for OutboundPacket {
             v.push(self.headers[i]);
         }
 
-        [v, self.data].concat()        
+        [v, self.data.clone()].concat()        
     }
 }
 
